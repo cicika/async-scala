@@ -31,7 +31,7 @@ class Heater extends Actor {
 			scheduleTempChange(-1)
 			context.unbecome()
 		case ChangeTemp(by) => updateTemp(by)
-		case CheckTemp => sender ! currentTemperature
+		case CheckTemp => sender() ! currentTemperature
 		case _ =>
 	}
 
@@ -95,13 +95,7 @@ class Thermostatt extends Actor {
 		case CheckTemp =>
 			println("[Thermostatt] Checking Temperature...")
 			val selfRef = context.self
-			/* shortened::
-				(heater ? CheckTemp).mapTo[Temp] onComplete { ... }
-			*/
-
-			val future = Future {
-				heater ? CheckTemp
-			}
+			
 			(heater ? CheckTemp).mapTo[Temp] onComplete {
 				case Success(temp) => selfRef ! temp
 				case Failure(ex) => println(s"Temperature mesuring failure (!?) $ex")
