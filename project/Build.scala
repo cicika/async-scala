@@ -1,13 +1,13 @@
 import sbt._
 import Keys._
 
-object AsyncScala extends Build with SubProjectDefinition {
+object AsyncScala extends Build {
 
   val akkaVersion = "2.3.9"
 
   lazy val buildSettings = Seq(
     organization := "rs.heapspace",
-    version := streamVersion,
+    version := "1.0",
     scalaVersion := "2.11.5"
   )
 
@@ -17,7 +17,7 @@ object AsyncScala extends Build with SubProjectDefinition {
     settings = defaultSettings)
 
   
-  lazy val defaultSettings = Seq(
+  lazy val defaultSettings = Defaults.defaultSettings ++ Seq(
     libraryDependencies ++= {
       Seq(
         "com.typesafe.akka" %% "akka-actor" % akkaVersion % "compile",
@@ -37,5 +37,5 @@ object AsyncScala extends Build with SubProjectDefinition {
 
     logLevel := Level.Info,
 
-    maxErrors := 50
+    maxErrors := 50)
 }
